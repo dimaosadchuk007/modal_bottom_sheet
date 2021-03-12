@@ -1,6 +1,7 @@
 // Copyright 2014 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
+
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart' show CupertinoTheme, CupertinoApp;
@@ -21,8 +22,7 @@ import '../bottom_sheet_route.dart';
 const double _kPreviousPageVisibleOffset = 10;
 
 const Radius _kDefaultTopRadius = Radius.circular(12);
-const BoxShadow _kDefaultBoxShadow =
-    BoxShadow(blurRadius: 10, color: Colors.black12, spreadRadius: 5);
+const BoxShadow _kDefaultBoxShadow = BoxShadow(blurRadius: 10, color: Colors.black12, spreadRadius: 5);
 
 /// Cupertino Bottom Sheet Container
 ///
@@ -34,7 +34,6 @@ class _CupertinoBottomSheetContainer extends StatelessWidget {
   final Color? backgroundColor;
   final Radius topRadius;
   final BoxShadow? shadow;
-  final bool cacheMode;
 
   const _CupertinoBottomSheetContainer({
     Key? key,
@@ -42,18 +41,16 @@ class _CupertinoBottomSheetContainer extends StatelessWidget {
     this.backgroundColor,
     required this.topRadius,
     this.shadow,
-    required this.cacheMode,
   }) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
-    final topSafeAreaPadding =
-        cacheMode ? 0.0 : MediaQuery.of(context).padding.top;
-    final topPadding =
-        cacheMode ? 0.0 : _kPreviousPageVisibleOffset + topSafeAreaPadding;
+    final topSafeAreaPadding = MediaQuery.of(context).padding.top;
+    final topPadding = _kPreviousPageVisibleOffset + topSafeAreaPadding;
 
     final _shadow = shadow ?? _kDefaultBoxShadow;
-    BoxShadow(blurRadius: 10, color: Colors.black12, spreadRadius: 5);
+        BoxShadow(blurRadius: 10, color: Colors.black12, spreadRadius: 5);
     final _backgroundColor =
         backgroundColor ?? CupertinoTheme.of(context).scaffoldBackgroundColor;
     return Padding(
@@ -97,7 +94,6 @@ Future<T?> showCupertinoModalBottomSheet<T>({
   RouteSettings? settings,
   Color? transitionBackgroundColor,
   BoxShadow? shadow,
-  required bool cacheMode,
 }) async {
   assert(context != null);
   assert(builder != null);
@@ -116,13 +112,11 @@ Future<T?> showCupertinoModalBottomSheet<T>({
       await Navigator.of(context, rootNavigator: useRootNavigator).push(
     CupertinoModalBottomSheetRoute<T>(
         builder: builder,
-        cacheMode: cacheMode,
         containerBuilder: (context, _, child) => _CupertinoBottomSheetContainer(
               child: child,
               backgroundColor: backgroundColor,
               topRadius: topRadius,
               shadow: shadow,
-              cacheMode: cacheMode,
             ),
         secondAnimationController: secondAnimation,
         expanded: expand,
@@ -150,8 +144,8 @@ class CupertinoModalBottomSheetRoute<T> extends ModalBottomSheetRoute<T> {
 
   final Curve? previousRouteAnimationCurve;
 
+
   final BoxShadow? boxShadow;
-  final bool cacheMode;
 
   // Background color behind all routes
   // Black by default
@@ -179,8 +173,7 @@ class CupertinoModalBottomSheetRoute<T> extends ModalBottomSheetRoute<T> {
     this.transitionBackgroundColor,
     this.topRadius = _kDefaultTopRadius,
     this.previousRouteAnimationCurve,
-    required this.cacheMode,
-  })   : assert(expanded != null),
+  })  : assert(expanded != null),
         assert(isDismissible != null),
         assert(enableDrag != null),
         super(
@@ -207,13 +200,11 @@ class CupertinoModalBottomSheetRoute<T> extends ModalBottomSheetRoute<T> {
     Animation<double> secondaryAnimation,
     Widget child,
   ) {
-    final paddingTop = cacheMode ? 0.0 : MediaQuery.of(context).padding.top;
+    final paddingTop = MediaQuery.of(context).padding.top;
     final distanceWithScale =
-        cacheMode ? 0.0 : (paddingTop + _kPreviousPageVisibleOffset) * 0.9;
-    final offsetY = cacheMode
-        ? 0.0
-        : secondaryAnimation.value * (paddingTop - distanceWithScale);
-    final scale = cacheMode ? 0.0 : 1 - secondaryAnimation.value / 10;
+        (paddingTop + _kPreviousPageVisibleOffset) * 0.9;
+    final offsetY = secondaryAnimation.value * (paddingTop - distanceWithScale);
+    final scale = 1 - secondaryAnimation.value / 10;
     return AnimatedBuilder(
       builder: (context, child) => Transform.translate(
         offset: Offset(0, offsetY),
@@ -237,7 +228,6 @@ class CupertinoModalBottomSheetRoute<T> extends ModalBottomSheetRoute<T> {
       animationCurve: previousRouteAnimationCurve,
       topRadius: topRadius,
       backgroundColor: transitionBackgroundColor ?? Colors.black,
-      cacheMode: cacheMode,
     );
   }
 }
@@ -248,7 +238,6 @@ class _CupertinoModalTransition extends StatelessWidget {
   final Curve? animationCurve;
   final Color backgroundColor;
   final BoxShadow? boxShadow;
-  final bool cacheMode;
 
   final Widget body;
 
@@ -260,15 +249,14 @@ class _CupertinoModalTransition extends StatelessWidget {
     this.backgroundColor = Colors.black,
     this.animationCurve,
     this.boxShadow,
-    required this.cacheMode,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var startRoundCorner = 0.0;
-    final paddingTop = cacheMode ? 0.0 : MediaQuery.of(context).padding.top;
+    final paddingTop = MediaQuery.of(context).padding.top;
     if (Theme.of(context).platform == TargetPlatform.iOS && paddingTop > 20) {
-      startRoundCorner = cacheMode ? 0.0 : 38.5;
+      startRoundCorner = 38.5;
       //https://kylebashour.com/posts/finding-the-real-iphone-x-corner-radius
     }
 
@@ -284,8 +272,8 @@ class _CupertinoModalTransition extends StatelessWidget {
         child: body,
         builder: (context, child) {
           final progress = curvedAnimation.value;
-          final yOffset = cacheMode ? 0.0 : progress * paddingTop;
-          final scale = cacheMode ? 0.0 : 1 - progress / 10;
+          final yOffset = progress * paddingTop;
+          final scale = 1 - progress / 10;
           final radius = progress == 0
               ? 0.0
               : (1 - progress) * startRoundCorner + progress * topRadius.x;
@@ -314,7 +302,6 @@ class _CupertinoScaffold extends InheritedWidget {
   final AnimationController? animation;
 
   final Radius? topRadius;
-  final bool cacheMode;
 
   @override
   final Widget child;
@@ -323,7 +310,6 @@ class _CupertinoScaffold extends InheritedWidget {
     Key? key,
     this.animation,
     required this.child,
-    required this.cacheMode,
     this.topRadius,
   }) : super(key: key, child: child);
 
@@ -341,12 +327,10 @@ class CupertinoScaffold extends StatefulWidget {
   final Widget body;
   final Radius topRadius;
   final Color transitionBackgroundColor;
-  final bool cacheMode;
 
   const CupertinoScaffold({
     Key? key,
     required this.body,
-    required this.cacheMode,
     this.topRadius = _kDefaultTopRadius,
     this.transitionBackgroundColor = Colors.black,
   }) : super(key: key);
@@ -370,7 +354,6 @@ class CupertinoScaffold extends StatefulWidget {
     Duration? duration,
     RouteSettings? settings,
     BoxShadow? shadow,
-    bool cacheMode = false,
   }) async {
     assert(context != null);
     assert(builder != null);
@@ -390,13 +373,12 @@ class CupertinoScaffold extends StatefulWidget {
         .push(CupertinoModalBottomSheetRoute<T>(
       closeProgressThreshold: closeProgressThreshold,
       builder: builder,
-      secondAnimationController: CupertinoScaffold.of(context)!.animation,
+      //secondAnimationController: CupertinoScaffold.of(context)!.animation,
       containerBuilder: (context, _, child) => _CupertinoBottomSheetContainer(
         child: child,
         backgroundColor: backgroundColor,
         topRadius: topRadius ?? _kDefaultTopRadius,
         shadow: shadow,
-        cacheMode: cacheMode,
       ),
       expanded: expand,
       barrierLabel: barrierLabel,
@@ -409,7 +391,6 @@ class CupertinoScaffold extends StatefulWidget {
       previousRouteAnimationCurve: previousRouteAnimationCurve,
       duration: duration,
       settings: settings,
-      cacheMode: cacheMode,
     ));
     return result;
   }
@@ -438,13 +419,11 @@ class _CupertinoScaffoldState extends State<CupertinoScaffold>
     return _CupertinoScaffold(
       animation: animationController,
       topRadius: widget.topRadius,
-      cacheMode: cacheMode,
       child: _CupertinoModalTransition(
         secondaryAnimation: animationController,
         body: widget.body,
         topRadius: widget.topRadius,
         backgroundColor: widget.transitionBackgroundColor,
-        cacheMode: cacheMode,
       ),
     );
   }

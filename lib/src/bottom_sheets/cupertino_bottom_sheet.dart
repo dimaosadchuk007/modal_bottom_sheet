@@ -354,7 +354,7 @@ class CupertinoScaffold extends StatefulWidget {
     Duration? duration,
     RouteSettings? settings,
     BoxShadow? shadow,
-    bool chacheMode = false,
+    bool cacheMode = false,
   }) async {
     assert(context != null);
     assert(builder != null);

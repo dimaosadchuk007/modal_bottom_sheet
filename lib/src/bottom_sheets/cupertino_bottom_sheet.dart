@@ -43,7 +43,7 @@ class _CupertinoBottomSheetContainer extends StatelessWidget {
     this.backgroundColor,
     required this.topRadius,
     this.shadow,
-    this.cacheMode,
+    required this.cacheMode = false,
   }) : super(key: key);
 
   @override
@@ -98,7 +98,7 @@ Future<T?> showCupertinoModalBottomSheet<T>({
   RouteSettings? settings,
   Color? transitionBackgroundColor,
   BoxShadow? shadow,
-  bool cacheMode = false,
+  required bool cacheMode = false,
 }) async {
   assert(context != null);
   assert(builder != null);
@@ -179,7 +179,7 @@ class CupertinoModalBottomSheetRoute<T> extends ModalBottomSheetRoute<T> {
     this.transitionBackgroundColor,
     this.topRadius = _kDefaultTopRadius,
     this.previousRouteAnimationCurve,
-    this.cacheMode = false,
+    required this.cacheMode = false,
   })  : assert(expanded != null),
         assert(isDismissible != null),
         assert(enableDrag != null),
@@ -260,7 +260,7 @@ class _CupertinoModalTransition extends StatelessWidget {
     this.backgroundColor = Colors.black,
     this.animationCurve,
     this.boxShadow,
-    this.cacheMode,
+    required this.cacheMode = false,
   }) : super(key: key);
 
   @override

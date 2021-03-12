@@ -354,6 +354,7 @@ class CupertinoScaffold extends StatefulWidget {
     Duration? duration,
     RouteSettings? settings,
     BoxShadow? shadow,
+    bool chacheMode = false,
   }) async {
     assert(context != null);
     assert(builder != null);
@@ -373,7 +374,7 @@ class CupertinoScaffold extends StatefulWidget {
         .push(CupertinoModalBottomSheetRoute<T>(
       closeProgressThreshold: closeProgressThreshold,
       builder: builder,
-      //secondAnimationController: CupertinoScaffold.of(context)!.animation,
+      secondAnimationController: cacheMode ? null : CupertinoScaffold.of(context)!.animation,
       containerBuilder: (context, _, child) => _CupertinoBottomSheetContainer(
         child: child,
         backgroundColor: backgroundColor,

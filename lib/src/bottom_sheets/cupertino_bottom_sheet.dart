@@ -211,7 +211,7 @@ class CupertinoModalBottomSheetRoute<T> extends ModalBottomSheetRoute<T> {
     final distanceWithScale =
         cacheMode ? 0.0 : (paddingTop + _kPreviousPageVisibleOffset) * 0.9;
     final offsetY = cacheMode
-        ? 0
+        ? 0.0
         : secondaryAnimation.value * (paddingTop - distanceWithScale);
     final scale = cacheMode ? 0.0 : 1 - secondaryAnimation.value / 10;
     return AnimatedBuilder(
@@ -396,6 +396,7 @@ class CupertinoScaffold extends StatefulWidget {
         backgroundColor: backgroundColor,
         topRadius: topRadius ?? _kDefaultTopRadius,
         shadow: shadow,
+        cacheMode: cacheMode,
       ),
       expanded: expand,
       barrierLabel: barrierLabel,

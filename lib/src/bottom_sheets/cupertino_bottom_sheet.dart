@@ -314,7 +314,7 @@ class _CupertinoScaffold extends InheritedWidget {
   final AnimationController? animation;
 
   final Radius? topRadius;
-  final cacheMode;
+  final bool cacheMode;
 
   @override
   final Widget child;
